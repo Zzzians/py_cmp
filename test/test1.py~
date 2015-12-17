@@ -1,0 +1,49 @@
+import sys
+import math
+lexi = {'line':4, 'rect':4, 'filledrect':4, 'translate':2, 'rotate':1, 'color':3, 'linewidth':1}
+stackin = []
+l = str('(linewidth 438)(rotate -159)(rotate -258)(translate 440 17)(  rect -89 -478 -217 289)')
+#l = ''
+#for string in fileinput.input():
+#    l = l + string
+l = l.replace('\n', ' ')
+l = l.replace('(', ' ')
+l = l.replace(')', ' ')
+l = l.split()
+print('%!PS-Adobe-3.1')
+for i in range(len(l)):
+    if l[i] in lexi.keys():
+        stack0 = []
+        for j in l[i:i+1+lexi[l[i]]]:
+            stack0.append(float(j))
+        stackin.append(stack0)
+inde = 0
+for i in stackin:
+    resu = []
+    if i[0] == 'linewidth':
+        print(i[1],'setlinewidth')
+    elif i[0] == 'color':
+        print(i[1],i[2],i[3],'setrgbcolor') 
+    elif i[0] in ['line', 'rect']:
+        if i[0] == 'line':
+            resu.append([i[1],i[2]])
+            resu.append([i[3],i[4]])
+        elif i[0] == 'rect':
+            resu.append([i[1],i[2]])
+            resu.append([i[1]+i[3],i[2]])
+            resu.append([i[1]+i[3],i[2]+i[4]])
+            resu.append([i[1],i[2]+i[4]])                     
+        for j in stackin[i:inde]:
+            if j == 'translate':
+                for k in resu:
+                    k[0] = j[1] + k[0]
+                    k[1] = j[2] + k[1]
+            elif j == 'rotate':
+                for k in resu:
+                    k[0],k[1] = k[0] * math.cos(math.radians(j[1])) - k[1] * math.sin(math.radians(j[1])),k[0] * math.sin(math.radians(j[1])) + k[1] * math.cos(math.radians(j[1])
+        print(resu[0][0],resu[0][1],'moveto')
+        for i in range(len(resu)):
+            print(resu[k][1],resu[k][2],'lineto')
+        print('stroke') 
+print('showpage'))                                                                                                                                                   
+                                                                               

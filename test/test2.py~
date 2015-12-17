@@ -1,0 +1,118 @@
+import sys
+import math
+x=sys.stdin.readlines()
+e=[]
+track=[]
+print('%!PS-Adobe-3.1')
+for i in range(len(x)):
+    a=x[i]
+    a=a.replace('(',' ')
+    a=a.replace(')',' ')
+    a=a.replace('\n',' ')
+    e=e+a.split()
+for i in range(len(e)):
+    if e[i]=='color':
+        print(float(e[i+1]),float(e[i+2]),float(e[i+3]),'setrgbcolor')
+    elif e[i]=='linewidth':
+        print(e[i+1],'setlinewidth')
+    elif e[i]=='translate':
+        track.append(e[i])
+        track.append(e[i+1])
+        track.append(e[i+2])
+    elif e[i]=='rotate':
+        track.append(e[i])
+        track.append(e[i+1])
+    elif e[i]=='line':
+        x=float(e[i+1])
+        y=float(e[i+2])
+        w=float(e[i+3])
+        z=float(e[i+4])
+        for j in range(len(track)):
+            if track[-j-1]=='translate':
+                
+                x=x+float(track[-j])
+                y=y+float(track[-j+1])
+                w=w+float(track[-j])
+                z=z+float(track[-j+1])
+
+                
+            elif track[-j-1]=='rotate':
+      
+                a1=math.radians(float(track[-j]))
+                
+
+                xx=x*math.cos(a1)-y*math.sin(a1)
+                yy=y*math.cos(math.radians(float(track[-j])))+x*math.sin(math.radians(float(track[-j])))
+          
+                ww=w*math.cos(math.radians(float(track[-j])))-z*math.sin(math.radians(float(track[-j])))
+                zz=z*math.cos(math.radians(float(track[-j])))+w*math.sin(math.radians(float(track[-j])))
+                x=xx
+                y=yy
+                w=ww
+                z=zz
+           
+        print(str(x)+' '+str(y)+" "+'moveto')
+       
+        print(w,z,'lineto')
+        track=[]
+        print('stroke')
+
+    elif e[i]=='rect':
+        o=float(e[i+1])
+        p=float(e[i+2])
+        
+        q=float(e[i+1])+float(e[i+3])
+        r=float(e[i+2])
+        
+        s=float(e[i+1])+float(e[i+3])
+        t=float(e[i+2])+float(e[i+4])
+        
+        u=float(e[i+1])
+        v=float(e[i+2])+float(e[i+4])
+
+        for j in range(len(track)):
+            if track[-j-1]=='rotate':
+                oo=o*math.cos(math.radians(float(track[-j])))-p*math.sin(math.radians(float(track[-j])))
+                pp=p*math.cos(math.radians(float(track[-j])))+o*math.sin(math.radians(float(track[-j])))
+                
+                qq=q*math.cos(math.radians(float(track[-j])))-r*math.sin(math.radians(float(track[-j])))
+                rr=r*math.cos(math.radians(float(track[-j])))+q*math.sin(math.radians(float(track[-j])))
+                
+                ss=s*math.cos(math.radians(float(track[-j])))-t*math.sin(math.radians(float(track[-j])))
+                tt=t*math.cos(math.radians(float(track[-j])))+s*math.sin(math.radians(float(track[-j])))
+                    
+                uu=u*math.cos(math.radians(float(track[-j])))-v*math.sin(math.radians(float(track[-j])))
+                vv=v*math.cos(math.radians(float(track[-j])))+u*math.sin(math.radians(float(track[-j])))
+                
+                o=oo
+                p=pp
+                q=qq
+                r=rr
+                s=ss
+                t=tt
+                u=uu
+                v=vv
+
+            elif track[-j-1]=='translate':
+                o=o+float(track[-j])
+                p=p+float(track[-j+1])
+              
+                q=q+float(track[-j])
+                r=r+float(track[-j+1])
+
+                s=s+float(track[-j])
+                t=t+float(track[-j+1])
+
+                u=u+float(track[-j])
+                v=v+float(track[-j+1])
+
+        print(str(o)+' '+str(p)+' moveto')
+        print(str(q)+' '+str(r)+' lineto')
+        print(str(s)+' '+str(t)+' lineto')
+        print(str(u)+' '+str(v)+' lineto')
+        print(str(o)+' '+str(p)+' lineto')
+        track=[]
+        print('stroke')
+print('showpage')
+
+        

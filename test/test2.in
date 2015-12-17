@@ -1,0 +1,12 @@
+  1           0 LOAD_CONST               0 (3)
+              3 STORE_NAME               0 (b)
+
+  2           6 LOAD_NAME                0 (b)
+              9 STORE_NAME               1 (a)
+
+  3          12 LOAD_NAME                2 (print)
+             15 LOAD_NAME                1 (a)
+             18 CALL_FUNCTION            1 (1 positional, 0 keyword pair)
+             21 POP_TOP
+             22 LOAD_CONST               1 (None)
+             25 RETURN_VALUE
